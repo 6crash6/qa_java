@@ -1,5 +1,6 @@
 import com.example.Cat;
 import com.example.Feline;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -8,46 +9,37 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CatTest {
+    private Feline felineMock;
+    private Cat cat;
+    private List<String> expectedFood;
 
-     // Проверяем метод getFood у кота.
-     // Проверяем, что метод возвращает правильный список пищи для хищника.
-     // @throws Exception Если возникает ошибка при получении пищи
-    @Test
-    public void testGetFood() throws Exception {
-        Feline felineMock = Mockito.mock(Feline.class);
-        Mockito.when(felineMock.eatMeat()).thenReturn(List.of("Мясо"));
+    @BeforeEach
+    void setUp() throws Exception {
+        felineMock = Mockito.mock(Feline.class);
+        expectedFood = List.of("Мясо");
+        Mockito.when(felineMock.eatMeat()).thenReturn(expectedFood);
 
-        Cat cat = new Cat(felineMock);
-        List<String> food = cat.getFood();
-
-        assertEquals(List.of("Мясо"), food);
+        cat = new Cat(felineMock);
     }
 
+    // Проверяем метод getFood у кота
+    @Test
+    public void testGetFood() throws Exception {
+        List<String> food = cat.getFood();
+        assertEquals(expectedFood, food);
+    }
 
-     // Проверяем метод getSound у кота.
-     // Проверяем, что метод возвращает правильное звучание.
+    // Проверяем метод getSound у кота
     @Test
     public void testGetSound() {
-        Feline felineMock = Mockito.mock(Feline.class);
-
-        Cat cat = new Cat(felineMock);
         String sound = cat.getSound();
-
         assertEquals("Мяу", sound);
     }
 
-
-    // Дополнительная проверка взаимодействия кота с объектом Predator.
-    // Проверяем, что кот корректно получает пищу через объект Feline.
-    // @throws Exception Если возникает ошибка при получении пищи
+    // Дополнительная проверка взаимодействия кота с объектом Predator
     @Test
     public void testCatInteractsWithPredator() throws Exception {
-        Feline felineMock = Mockito.mock(Feline.class);
-        Mockito.when(felineMock.eatMeat()).thenReturn(List.of("Мясо"));
-
-        Cat cat = new Cat(felineMock);
         List<String> food = cat.getFood();
-
-        assertEquals(List.of("Мясо"), food);
+        assertEquals(expectedFood, food);
     }
 }
